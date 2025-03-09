@@ -1,0 +1,11 @@
+[package]
+name = "fix_router"
+version = "0.1.0"
+edition = "2021"  # Note: Changed to 2021 as 2024 is not yet released
+
+[dependencies]
+md5 = "0.7.0"  # For hashing
+rand = "0.8.5"  # For testing and random node selection
+thiserror = "1.0"  # For error handling
+byteorder = "1.4.3"  # For binary data handling
+zerocopy = "0.6.1"  # For zero-copy parsing
