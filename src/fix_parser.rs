@@ -38,16 +38,19 @@ impl FixMessage {
     /// 
     /// In FIX routing, we typically want to maintain order of messages for a specific
     /// instrument or order. This function returns a routing key based on one of:
-    /// 1. OrderID (tag 37) if present
-    /// 2. ClOrdID (tag 11) if present
-    /// 3. A combination of SenderCompID + TargetCompID + MsgSeqNum if no order identifiers exist
+    /// 1. ClOrdID (tag 11) if present - this ensures consistent routing across the order lifecycle
+    /// 2. A combination of SenderCompID + TargetCompID + MsgSeqNum if no order identifiers exist
+    ///
+    /// Note: We intentionally prioritize ClOrdID over OrderID for consistency across the order lifecycle,
+    /// since ClOrdID is present in all order-related messages while OrderID is only present after 
+    /// the first execution report.
     pub fn get_routing_key(&self) -> String {
-        if let Some(ref order_id) = self.order_id {
-            // Use OrderID as routing key for existing orders
-            return format!("order:{}", order_id);
-        } else if let Some(ref cl_ord_id) = self.cl_ord_id {
-            // Use ClOrdID for new orders
+        if let Some(ref cl_ord_id) = self.cl_ord_id {
+            // Always use ClOrdID as routing key if present to maintain session affinity
             return format!("clord:{}", cl_ord_id);
+        } else if let Some(ref order_id) = self.order_id {
+            // Fall back to OrderID only if ClOrdID is not present
+            return format!("order:{}", order_id);
         } else {
             // Default to sender+target+sequence for messages without order references
             return format!("{}:{}:{}", self.sender, self.target, self.seq_num);

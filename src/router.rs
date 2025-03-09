@@ -3,6 +3,7 @@ use crate::fix_parser::{parse_fix_message, FixMessage};
 use crate::error::FixRouterError;
 
 /// Main FIX Router that distributes messages to nodes using consistent hashing
+#[derive(Clone)]
 pub struct FixRouter {
     /// The consistent hash ring that manages node distribution
     hash_ring: ConsistentHashRing,
@@ -68,8 +69,16 @@ impl FixRouter {
         // Get the routing key based on business logic
         let routing_key = fix_msg.get_routing_key();
         
+        // For debugging purposes in tests
+        println!("Routing key: {}", routing_key);
+        
         // Use consistent hashing to determine the target node
-        self.hash_ring.get_node(&routing_key)
+        let node = self.hash_ring.get_node(&routing_key)?;
+        
+        // For debugging purposes in tests
+        println!("Selected node: {}", node);
+        
+        Ok(node)
     }
     
     /// Routes a batch of FIX messages and returns their destinations

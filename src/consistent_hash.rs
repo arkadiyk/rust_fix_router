@@ -6,6 +6,7 @@ use md5;
 use crate::error::FixRouterError;
 
 /// A consistent hash ring implementation that manages the distribution of nodes
+#[derive(Clone)]
 pub struct ConsistentHashRing {
     /// The number of virtual nodes to create per physical node
     virtual_nodes: usize,

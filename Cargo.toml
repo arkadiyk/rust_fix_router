@@ -9,3 +9,5 @@ rand = "0.8.5"  # For testing and random node selection
 thiserror = "1.0"  # For error handling
 byteorder = "1.4.3"  # For binary data handling
 zerocopy = "0.6.1"  # For zero-copy parsing
+crossbeam-channel = "0.5.8"  # For thread-safe message passing
+num_cpus = "1.16.0"  # For determining optimal thread count
