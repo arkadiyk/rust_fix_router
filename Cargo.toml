@@ -11,3 +11,5 @@ byteorder = "1.4.3"  # For binary data handling
 zerocopy = "0.6.1"  # For zero-copy parsing
 crossbeam-channel = "0.5.8"  # For thread-safe message passing
 num_cpus = "1.16.0"  # For determining optimal thread count
+tokio = { version = "1.28", features = ["full"] }  # Async runtime
+futures = "0.3"  # For working with futures

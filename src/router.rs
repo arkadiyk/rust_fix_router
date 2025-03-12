@@ -1,5 +1,5 @@
 use crate::consistent_hash::ConsistentHashRing;
-use crate::fix_parser::{parse_fix_message, FixMessage};
+use crate::fix_parser::parse_fix_message;
 use crate::error::FixRouterError;
 
 /// Main FIX Router that distributes messages to nodes using consistent hashing
